@@ -19,12 +19,9 @@
 
 # Compiled Dynamic libraries
 *.so
+*.so.*
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai
@@ -37,5 +34,35 @@
 *.out
 *.app
 
-# debug information files
+# Debug information files
 *.dwo
+
+# Build directories
+build/
+cmake-build-*/
+
+# Doxygen generated output
+docs/doxygen/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cache/
+compile_commands.json
+.clangd/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Core dumps
+core
+core.*
+vgcore.*
+
+# Fortran module files
+*.mod
+*.smod

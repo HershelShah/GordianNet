@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: gordian_net
+Description: Lightweight bare-metal P2P link-layer library (ICE + DTLS 1.2 + KCP)
+Version: @PROJECT_VERSION@
+Libs: -L${libdir} -lgordian_net
+Cflags: -I${includedir}

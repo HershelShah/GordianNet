@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Debug, Release]
+        sanitizer: ["", address, thread, undefined]
+        exclude:
+          # Sanitizers only in Debug — Release + sanitizer is redundant
+          - build_type: Release
+            sanitizer: address
+          - build_type: Release
+            sanitizer: thread
+          - build_type: Release
+            sanitizer: undefined
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libmbedtls-dev
+
+      - name: Configure
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DGORDIAN_SANITIZER=${{ matrix.sanitizer }} \
+            -DGORDIAN_WARNINGS_AS_ERRORS=ON
+
+      - name: Build
+        run: cmake --build build --parallel $(nproc)
+
+      - name: Test
+        run: cd build && LD_LIBRARY_PATH=. ctest --output-on-failure -V

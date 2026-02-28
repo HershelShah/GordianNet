@@ -1,0 +1,4 @@
+# TSan suppressions for third-party libraries
+# libjuice: benign race in lazy CRC32 table initialization (both threads
+# write identical values to a static lookup table)
+race:juice_crc32
