@@ -25,7 +25,7 @@ jobs:
             sanitizer: undefined
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y libmbedtls-dev
@@ -41,4 +41,6 @@ jobs:
         run: cmake --build build --parallel $(nproc)
 
       - name: Test
+        env:
+          TSAN_OPTIONS: suppressions=${{ github.workspace }}/tsan_suppressions.txt
         run: cd build && LD_LIBRARY_PATH=. ctest --output-on-failure -V
